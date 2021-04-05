@@ -2,36 +2,74 @@ import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import { View, Text } from 'react-native'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { Icon } from 'react-native-elements'
 
-import Search from '../screens/Search'
-import Services from '../screens/Services'
-import MyServices from '../screens/MyServices'
-import Account from '../screens/Account'
+import AccountStack from './AccountStack'
+import MyServicesStack from './MyServicesStack'
+import SearchStack from './SearchStack'
+import ServicesStack from './ServicesStack'
 
 const Tab = createBottomTabNavigator()
 
 export default function Navigation() {
+    const screenOptions = (route , color) =>{
+        let iconName
+
+        switch (route.name) {
+            case "search":
+                iconName = "magnify"
+                break;
+            case "services":
+                iconName = "check-bold"
+                break;
+            case "myservices":
+                iconName = "star"
+                break;
+            case "account":
+                iconName = "card-account-details"
+                break;
+        }
+
+        return(
+            <Icon
+                type = "material-community"
+                name = {iconName}
+                size = {25}
+                color = {color} 
+            />
+        )
+    }
+
     return (
         <NavigationContainer>
-            <Tab.Navigator>
+            <Tab.Navigator
+                initialRouteName = "search" 
+                tabBarOptions ={{
+                    inactiveTintColor : "#da5252",
+                    activeTintColor : "#f0cc20"
+                }}
+                screenOptions = {({route})=>({
+                    tabBarIcon : ({ color }) => screenOptions(route, color)
+                 })}
+            >
                 <Tab.Screen
                     name ="search"
-                     component={Search}
+                     component={SearchStack}
                     options ={{title: "Buscar"}}
                  />
                  <Tab.Screen
                     name ="services"
-                     component={Services}
+                     component={ServicesStack}
                     options ={{title: "Servicios"}}
                  />
                  <Tab.Screen
                     name ="myservices"
-                     component={MyServices}
+                     component={MyServicesStack}
                     options ={{title: "Mis Servicios"}}
                  />
                  <Tab.Screen
                     name ="account"
-                     component={Account}
+                     component={AccountStack}
                     options ={{title: "Perfil"}}
                  />
             </Tab.Navigator>
