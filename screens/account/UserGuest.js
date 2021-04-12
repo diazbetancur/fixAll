@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable';
 
-import Loading from '../../components/Loading'
 
 export default function UserGuest() {
     const navigation = useNavigation()
@@ -15,11 +14,11 @@ export default function UserGuest() {
             centerContent
             style ={styles.viewBody}
         >
-            <Animatable.Text animation='lightSpeedIn' duration={2000} style = {styles.titleFixAll}>FixAll</Animatable.Text>
+            <Animatable.Text animation='lightSpeedIn' duration={4000} style = {styles.titleFixAll}>FixAll</Animatable.Text>
             
             <Animatable.Image
                 animation= 'fadeInDown'
-                duration = {2000}
+                duration = {3000}
                 source = {require("../../assets/logop4_2.png")}
                 resizeMode = "contain"
                 style = {styles.image}
