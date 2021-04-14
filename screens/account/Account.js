@@ -10,7 +10,7 @@ import UserLogged from './UserLogged'
 export default function Account() {
     const [login, setLogin] = useState(null)
 
-    useEffect(
+    useFocusEffect(
         useCallback(() => {
             const user = getCurrentUser()
             user ? setLogin(true) : setLogin(false)
