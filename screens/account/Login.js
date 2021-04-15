@@ -17,7 +17,7 @@ export default function Login() {
             />
             <Animatable.Text animation='lightSpeedIn' duration={4000} style = {styles.titleFixAll}>FixAll</Animatable.Text>
             <Divider style = {styles.divider}/>
-            <Animatable.View  animation= "fadeInDownBig" duration={4000} style = {styles.container}>
+            <Animatable.View  animation= "lightSpeedIn" duration={4000} style = {styles.container}>
                 
                 <LoginForm/>
                 
