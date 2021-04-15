@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { Divider } from 'react-native-elements'
+import { Divider , Button} from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native'
-import { Button } from 'react-native'
+import LoginForm from '../../components/account/LoginForm'
 
 export default function Login() {
     return (
@@ -15,10 +15,12 @@ export default function Login() {
                 resizeMode = "contain"
                 style = {styles.image}
             />
+            <Animatable.Text animation='lightSpeedIn' duration={4000} style = {styles.titleFixAll}>FixAll</Animatable.Text>
             <Divider style = {styles.divider}/>
             <Animatable.View  animation= "fadeInDownBig" duration={4000} style = {styles.container}>
                 
-                <Text>loginform</Text>
+                <LoginForm/>
+                
                 <CreateAccount/>
             </Animatable.View>
             
@@ -30,7 +32,8 @@ function CreateAccount(prop){
     const navigation = useNavigation()
     return(
         <Button 
-            style = {styles.registerButton}
+            containerStyle = {styles.btnContainer}
+            buttonStyle = {styles.registerButton}
             title = "Crear Cuenta"
             onPress = {() => navigation.navigate("register")}
         >
@@ -55,5 +58,17 @@ const styles = StyleSheet.create({
     },
     registerButton: {
         backgroundColor: "#cf2b2d"
+    },
+    btnContainer: {
+        marginTop: 20 ,
+        width: "95%",
+        alignSelf: "center"
+    },
+    titleFixAll: {
+        fontWeight: "bold",
+        fontSize: 30,
+        marginVertical: 15,
+        textAlign: "center",
+        color: "#f0cc20"
     }
 })
