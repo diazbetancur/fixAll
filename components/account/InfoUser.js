@@ -24,7 +24,7 @@ export default function InfoUser({user , setLoading , setLoadingText}) {
         }
 
         const resultUpdateProfile = await updateProfile({photoURL: resultUploadImage.url})
-        console.log(resultUpdateProfile)
+        
         setLoading(true)
         if(resultUpdateProfile.statusResponse){
             setPhotoUrl(resultUploadImage.url)
