@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { map } from 'lodash'
 import { Icon, ListItem } from 'react-native-elements'
 import Modal from '../Modal'
+import ChangeDisplayNameForm from './ChangeDisplayNameForm'
 
 
 export default function AccountOptions({user , toastRef , setReloadUser}) {
@@ -47,7 +48,12 @@ export default function AccountOptions({user , toastRef , setReloadUser}) {
         switch (key) {
             case "displayName":
                 setRenderComponet(
-                    <Text>name</Text>
+                    <ChangeDisplayNameForm
+                        displayName = {user.displayName}
+                        setShowModal= {setShowModal}
+                        toastRef = {toastRef}
+                        setReloadUser ={setReloadUser}
+                    />
                 )
                 break;
             case "email":
@@ -94,7 +100,11 @@ export default function AccountOptions({user , toastRef , setReloadUser}) {
                     </ListItem>
                 ))
             }
-            <Modal isVisible ={showModal} setVisible={setShowModal}/>
+            <Modal isVisible ={showModal} setVisible={setShowModal}>
+                {
+                    renderComponet
+                }
+            </Modal>
                 
         </View>
     )
