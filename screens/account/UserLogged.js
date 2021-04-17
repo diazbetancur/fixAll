@@ -2,14 +2,45 @@ import React , {useState, useRef , useEffect}from 'react'
 import { Button } from 'react-native-elements'
 import { View, Text ,StyleSheet} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
-import { closeSession } from '../../utils/actions'
+import { closeSession , getCurrentUser} from '../../utils/actions'
+import Toast from "react-native-easy-toast"
+import InfoUser from '../../components/account/InfoUser'
+import Loading from '../../components/Loading'
 
 
 export default function UserLogged() {
+
+    const toastRef = useRef()
+    const navigation =useNavigation()
+
+    const [loading, setLoading] = useState(false)
+    const [loadingText, setLoadingText] = useState("")
+    const [user, setUser] = useState(null)
+    const [reloadUser, setReloadUser] = useState(false)
+
+
+    useEffect(() => {
+        setUser(getCurrentUser())
+        setReloadUser(false)
+    }, [reloadUser])
+
+
     return (
         <View>
-            <Text>UserLogged</Text>
-            <Text>Options</Text>
+             {
+                user && (
+                    <View>
+                        <InfoUser 
+                            user = {user} 
+                            setLoading ={setLoading} 
+                            setLoadingText = {setLoadingText}
+                        />
+                        <Text>Options</Text>
+                        
+                    </View>
+                )
+            }
+            
             <Button
                 title ="Cerrar sesion"
                 containerStyle = {styles.btnContainer}
@@ -19,6 +50,8 @@ export default function UserLogged() {
                     navigation.navigate("search")
                 }}
             />
+            <Toast ref = {toastRef} position = "center" opacity = {0.9} />
+            <Loading isVisible = {loading} text = {loadingText}/>
         </View>
     )
 }
