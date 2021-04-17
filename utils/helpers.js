@@ -1,5 +1,5 @@
-//import * as Permissions from "expo-permissions"
-//import * as ImagePicker from "expo-image-picker"
+import * as Permissions from "expo-permissions"
+import * as ImagePicker from "expo-image-picker"
 import {Alert} from 'react-native'
 
 export function validateEmail(email) {
