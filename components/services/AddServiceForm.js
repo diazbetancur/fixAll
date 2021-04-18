@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, Dimensions } from 'react-native'
-import { Avatar, Button, Icon, Input, Image } from 'react-native-elements'
+import { Avatar, Button, Icon, Input, Image, CheckBox } from 'react-native-elements'
 import CountryPicker from 'react-native-country-picker-modal'
 import { filter, isEmpty, map, size } from 'lodash'
 import MapView from 'react-native-maps'
@@ -12,7 +12,7 @@ import { addDocumentWithoutId, getCurrenUser, uploadImage } from '../../utils/ac
 
 const widthScreen = Dimensions.get("window").width
 
-export default function AddServiceForm({ toastRef, setLoading, navigation }) {
+export default function AddServicesForm({ toastRef, setLoading, navigation }) {
     const [formData, setFormData] = useState(defaultFormValues())
     const [errorName, setErrorName] = useState(null)
     const [errorDescription, setErrorDescription] = useState(null)
@@ -21,48 +21,49 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
     const [errorPhone, setErrorPhone] = useState(null)
     const [imagesSelected, setImagesSelected] = useState([])
     const [isVisibleMap, setIsVisibleMap] = useState(false)
-    const [locationRestaurant, setLocationRestaurant] = useState(null)
+    const [location, setLocation] = useState(null)
+    const [checked, setChecked] = useState(false);
 
-    const addRestaurant = async() => {
-        if(!validForm()){
+    const addService = async () => {
+        if (!validForm()) {
             return
         }
 
         setLoading(true)
         const responseLoadImage = await uploadImages()
-        const restaurant = {
+        const service = {
             name: formData.name,
             address: formData.address,
             description: formData.description,
-            phone: formData.phone,            
+            phone: formData.phone,
             callingCode: formData.callingCode,
             email: formData.email,
-            location: locationRestaurant,
+            location: location,
             images: responseLoadImage,
-            rating:0,
-            ratingTotal:0,
-            quantityVouting:0,
+            rating: 0,
+            ratingTotal: 0,
+            quantityVouting: 0,
             creatAt: new Date(),
-            createBy: getCurrenUser().uid
+            createBy: getCurrenUser().uid,
+            Type: checked
         }
-        const responseAddDocument = await addDocumentWithoutId("restaurants", restaurant)
+        const responseAddDocument = await addDocumentWithoutId("services", service)
         setLoading(false)
-        console.log(responseAddDocument)
-        if(!responseAddDocument.statusResponse){
-            toastRef.current.show("Error guardando el restaurante, por favor intenta más tarde.")
+        if (!responseAddDocument.statusResponse) {
+            toastRef.current.show("Error creando el servicio, por favor intenta más tarde.")
             return
         }
-
-        navigation.navigate("restaurants")
+        // Pendiente
+        navigation.navigate("Inicio")
     }
 
-    const uploadImages = async() =>{
+    const uploadImages = async () => {
         const imagesUrl = []
 
         await Promise.all(
             map(imagesSelected, async (image) => {
-                const response = await uploadImage (image,"restaurants", uuid())
-                if(response.statusResponse){
+                const response = await uploadImage(image, "services", uuid())
+                if (response.statusResponse) {
                     imagesUrl.push(response.url)
                 }
             })
@@ -75,45 +76,45 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
         clearError()
         let isValid = true
 
-        if(isEmpty(formData.name)){
-            setErrorName("Debes ingresar el nombre del restaurante")
+        if (isEmpty(formData.name)) {
+            setErrorName("Debes ingresar el nombre del servicio")
             isValid = false
         }
 
-        if(isEmpty(formData.address)){
-            setErrorAddress("Debes ingresar la dirección del restaurante")
+        if (isEmpty(formData.address) && checked) {
+            setErrorAddress("Debes ingresar la dirección del experto")
             isValid = false
         }
 
-        if(isEmpty(formData.phone)){
-            setErrorPhone("Debes ingresar el teléfono del restaurante")
+        if (isEmpty(formData.phone)) {
+            setErrorPhone("Debes ingresar el teléfono del exerto")
             isValid = false
         }
 
-        if(isEmpty(formData.description)){
-            setErrorDescription("Debes ingresar una descripción del restaurante")
+        if (isEmpty(formData.description)) {
+            setErrorDescription("Debes ingresar una descripción del servicio")
             isValid = false
         }
 
-        if(isEmpty(formData.email)){
-            setErrorEmail("Debes ingresar el correo electronico del restaurante")
+        if (isEmpty(formData.email)) {
+            setErrorEmail("Debes ingresar el correo electronico del experto")
             isValid = false
         }
 
-        if(!locationRestaurant){
-            toastRef.current.show("Debes localizar el restaurante en el mapa.")
+        if (!location && checked) {
+            toastRef.current.show("Debes localizar el servicio en el mapa.")
             isValid = false
-        } else if (size(imagesSelected) === 0){
-            toastRef.current.show("Debes agregar al menos una imagen al restaurante.")
+        } else if (size(imagesSelected) === 0) {
+            toastRef.current.show("Debes agregar al menos una imagen al servicio.")
             isValid = false
         }
 
-        if(!validateEmail(formData.email)){
+        if (!validateEmail(formData.email)) {
             setErrorEmail("Debes ingresar un correo electronico valido")
             isValid = false
         }
 
-        if(size(formData.phone) < 10){
+        if (size(formData.phone) < 10) {
             setErrorPhone("Debes ingresar un teléfono valido")
             isValid = false
         }
@@ -121,7 +122,7 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
         return isValid
     }
 
-    const clearError = () =>{
+    const clearError = () => {
         setErrorAddress(null)
         setErrorPhone(null)
         setErrorEmail(null)
@@ -130,8 +131,8 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
     }
     return (
         <ScrollView style={styles.viewContainer}>
-            <ImageRestaurant
-                imageRestaurant={imagesSelected[0]}
+            <ImageService
+                imageService={imagesSelected[0]}
             />
             <FormAdd
                 formData={formData}
@@ -142,7 +143,9 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
                 errorDescription={errorDescription}
                 errorEmail={errorEmail}
                 setIsVisibleMap={setIsVisibleMap}
-                locationRestaurant={locationRestaurant}
+                location={location}
+                setChecked={setChecked}
+                checked={checked}
             />
             <UploadImage
                 toastRef={toastRef}
@@ -150,20 +153,21 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
                 setImagesSelected={setImagesSelected}
             />
             <Button
-                title="Crear Restarante"
-                onPress={addRestaurant}
-                buttonStyle={styles.btnAddRestaurant}
+                title="Crear Servicio"
+                onPress={addService}
+                buttonStyle={styles.btnAddService}
             />
-            <MapRestaurant
+            <MapService
                 isVisibleMap={isVisibleMap}
                 setIsVisibleMap={setIsVisibleMap}
-                setLocationRestaurant={setLocationRestaurant}
+                setLocation={setLocation}
                 toastRef={toastRef}
-            ></MapRestaurant>
+            ></MapService>
         </ScrollView>
     )
 }
-function MapRestaurant({ isVisibleMap, setIsVisibleMap, setLocationRestaurant, toastRef }) {
+
+function MapService({ isVisibleMap, setIsVisibleMap, setLocation, toastRef }) {
     const [newRegion, setNewRegion] = useState(null)
     useEffect(() => {
         (async () => {
@@ -175,7 +179,7 @@ function MapRestaurant({ isVisibleMap, setIsVisibleMap, setLocationRestaurant, t
     }, [])
 
     const confirmLocation = () => {
-        setLocationRestaurant(newRegion)
+        setLocation(newRegion)
         toastRef.current.show("Localización guardada correctamente.", 3000)
         setIsVisibleMap(false)
     }
@@ -191,7 +195,7 @@ function MapRestaurant({ isVisibleMap, setIsVisibleMap, setLocationRestaurant, t
                             style={styles.mapStyle}
                             initialRegion={newRegion}
                             showsUserLocation={true}
-                            onRegionChange={(region) => setNewRegion(region)}                                                     
+                            onRegionChange={(region) => setNewRegion(region)}
                         >
                             <MapView.Marker
                                 coordinate={{
@@ -221,15 +225,15 @@ function MapRestaurant({ isVisibleMap, setIsVisibleMap, setLocationRestaurant, t
         </Modal>
     )
 }
-function ImageRestaurant({ imageRestaurant }) {
+function ImageService({ imageService }) {
 
     return (
         <View style={styles.viewPhoto}>
             <Image
                 style={{ width: widthScreen, height: 200 }}
                 source={
-                    imageRestaurant
-                        ? { uri: imageRestaurant }
+                    imageService
+                        ? { uri: imageService }
                         : require("../../assets/no-image.png")
                 }
             />
@@ -288,12 +292,12 @@ function UploadImage({ toastRef, imagesSelected, setImagesSelected }) {
                 )
             }
             {
-                map(imagesSelected, (imageRestaurant, index) => (
+                map(imagesSelected, (imageService, index) => (
                     <Avatar
                         key={index}
                         style={styles.miniatureStyle}
-                        source={{ uri: imageRestaurant }}
-                        onPress={() => removeImage(imageRestaurant)}
+                        source={{ uri: imageService }}
+                        onPress={() => removeImage(imageService)}
                     />
                 ))
             }
@@ -302,38 +306,64 @@ function UploadImage({ toastRef, imagesSelected, setImagesSelected }) {
         </ScrollView>
     )
 }
-function FormAdd({ formData, setFormData, errorName, errorAddress, errorPhone, errorDescription, errorEmail, setIsVisibleMap, locationRestaurant }) {
+function FormAdd({ formData, setFormData, errorName, errorAddress, errorPhone, errorDescription, errorEmail, setIsVisibleMap, location, setChecked, checked }) {
     const [country, setCountry] = useState("CO")
     const [callinCode, setCallinCode] = useState("57")
     const [phone, setPhone] = useState("")
+    const [delivery, setDelivery] = useState(true)
 
     const onChange = (e, type) => {
         setFormData({ ...formData, [type]: e.nativeEvent.text })
     }
 
+    const changeInformation = () => {
+        if (checked) {
+            setChecked(false)
+            setDelivery(true)
+        }
+        else {
+            setChecked(true)
+            setDelivery(false)
+        }
+    }
     return (
         <View style={styles.viewForm}>
             <Input
-                placeholder="Nombre del restaurante"
+                placeholder="Nombre del Servicio"
                 defaultValue={formData.name}
                 onChange={(e) => onChange(e, "name")}
                 errorMessage={errorName}
             />
-            <Input
-                placeholder="Dirección del restaurante"
-                defaultValue={formData.address}
-                onChange={(e) => onChange(e, "address")}
-                errorMessage={errorAddress}
-                rightIcon={{
-                    type: "material-community",
-                    name: "google-maps",
-                    color: locationRestaurant ? "#7ab516" : "#c2c2c2",
-                    onPress: () => setIsVisibleMap(true)
-                }}
+            <CheckBox
+                checkedColor="#f0cc20"
+                uncheckedColor="#da5252"
+                title="Servicio solo en sitio"
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                checked={checked}
+                onPress={changeInformation}
             />
+            {
+                !delivery &&
+                (
+                    <Input
+                        placeholder="Dirección del Servicio"
+                        defaultValue={formData.address}
+                        onChange={(e) => onChange(e, "address")}
+                        errorMessage={errorAddress}
+                        rightIcon={{
+                            type: "material-community",
+                            name: "google-maps",
+                            color: location ? "#f0cc20" : "#da5252",
+                            onPress: () => setIsVisibleMap(true)
+                        }}
+                    />
+                )
+            }
+
             <Input
                 keyboardType="email-address"
-                placeholder="Email del restaurante"
+                placeholder="Email del Experto"
                 defaultValue={formData.email}
                 onChange={(e) => onChange(e, "email")}
                 errorMessage={errorEmail}
@@ -355,7 +385,7 @@ function FormAdd({ formData, setFormData, errorName, errorAddress, errorPhone, e
                     }}
                 />
                 <Input
-                    placeholder="WhatsApp del restaurante"
+                    placeholder="WhatsApp del experto"
                     keyboardType="phone-pad"
                     containerStyle={styles.inputPhone}
                     defaultValue={formData.phone}
@@ -364,7 +394,7 @@ function FormAdd({ formData, setFormData, errorName, errorAddress, errorPhone, e
                 />
             </View>
             <Input
-                placeholder="Descripción del restaurante"
+                placeholder="Descripción del servicio"
                 multiline
                 containerStyle={styles.textArea}
                 defaultValue={formData.description}
@@ -404,9 +434,9 @@ const styles = StyleSheet.create({
         height: 100,
         width: "100%"
     },
-    btnAddRestaurant: {
+    btnAddService: {
         margin: 20,
-        backgroundColor: "#8c6cac"
+        backgroundColor: "#f0cc20"
     },
     countryPicker: {},
     viewImage: {
@@ -436,21 +466,26 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 550
     },
-    viewMapBtn:{
-        flexDirection:"row",
-        justifyContent:"center",
+    viewMapBtn: {
+        flexDirection: "row",
+        justifyContent: "center",
         marginTop: 10
     },
-    viewMapBtnContainerSave:{
+    viewMapBtnContainerSave: {
         paddingRight: 5
     },
-    viewMapBtnContainerCancel:{
-        paddingLeft:5,        
+    viewMapBtnContainerCancel: {
+        paddingLeft: 5,
     },
-    viewMapBtnCancel:{
+    viewMapBtnCancel: {
         backgroundColor: "#7ab516"
     },
-    viewMapBtnSave:{
+    viewMapBtnSave: {
         backgroundColor: "#7ab516"
+    },
+    typeService: {
+        flexDirection: "row",
+        justifyContent: "center",
+        margin: 5
     }
 })
