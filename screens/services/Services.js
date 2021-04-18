@@ -42,7 +42,7 @@ export default function Services({ navigation }) {
                             color="#da5252"
                             reverse
                             containerStyle={styles.btnContainerSite}
-                            //onPress={() => navigation.navigate("add-service")}
+                            onPress={() => navigation.navigate("add-service")}
                         />
                         </ScreenContainer>
                 )
@@ -57,7 +57,7 @@ export default function Services({ navigation }) {
                             color="#da5252"
                             reverse
                             containerStyle={styles.btnContainerDelivery}
-                            //onPress={() => navigation.navigate("add-service")}
+                            onPress={() => navigation.navigate("add-service")}
                         />
                         </ScreenContainer>
                 )
