@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-export default function MyServices() {
+export default function AddService() {
     return (
         <View>
-            <Text>MyServices</Text>
+            <Text>AddService</Text>
         </View>
     )
 }
