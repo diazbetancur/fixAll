@@ -17,7 +17,7 @@ export default function ServicesStack() {
             />
             <Stack.Screen
                 name="add-service"
-                //component={AddService}
+                component={AddService}
                 options={{ title: "Servicios" }}
             />
         </Stack.Navigator>

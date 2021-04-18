@@ -12,7 +12,7 @@ import { addDocumentWithoutId, getCurrenUser, uploadImage } from '../../utils/ac
 
 const widthScreen = Dimensions.get("window").width
 
-export default function AddRestaurantForm({ toastRef, setLoading, navigation }) {
+export default function AddServiceForm({ toastRef, setLoading, navigation }) {
     const [formData, setFormData] = useState(defaultFormValues())
     const [errorName, setErrorName] = useState(null)
     const [errorDescription, setErrorDescription] = useState(null)

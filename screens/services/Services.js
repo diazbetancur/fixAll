@@ -14,6 +14,12 @@ export default function Services({ navigation }) {
     const [startRestaurant, setStartRestaurant] = useState(null)
     const [loading, setLoading] = useState(false)
 
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((userInfo) => {
+            userInfo ? setUser(true) : setUser(false)
+        })
+    }, [])
+
     if (user !== null) {
         return <Loading isVisible={true} text="Cargando... " />
     }
@@ -22,7 +28,7 @@ export default function Services({ navigation }) {
         <View style={styles.viewBody}>
             <Text style={styles.text}>¿Que tipo de Servicio esta Ofreciendo ?</Text>
             {
-                user === null && (
+                user && (
                     <ScreenContainer style={styles.container}>
                         <Text style={styles.textService}>Servicio en Sitio</Text>
                         <Icon
@@ -31,12 +37,13 @@ export default function Services({ navigation }) {
                             color="#da5252"
                             reverse
                             containerStyle={styles.btnContainerSite}
-                            onPress={() => navigation.navigate("add-service")}
-                        /></ScreenContainer>
+                            //onPress={() => navigation.navigate("add-service")}
+                        />
+                        </ScreenContainer>
                 )
             }
             {
-                user === null && (
+                user && (
                     <ScreenContainer style={styles.container}>
                         <Text style={styles.textService} >Servicio a Domicilio</Text>
                         <Icon
@@ -45,8 +52,9 @@ export default function Services({ navigation }) {
                             color="#da5252"
                             reverse
                             containerStyle={styles.btnContainerDelivery}
-                            onPress={() => navigation.navigate("add-service")}
-                        /></ScreenContainer>
+                            //onPress={() => navigation.navigate("add-service")}
+                        />
+                        </ScreenContainer>
                 )
             }
         </View>
