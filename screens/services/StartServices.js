@@ -19,7 +19,6 @@ export default function StartServices({ navigation }) {
     useEffect(() => {
         firebase.auth().onAuthStateChanged((userInfo) => {
             userInfo ? setUser(true) : setUser(false)
-            console.log(user)
         })
     }, [])
 
@@ -28,7 +27,6 @@ export default function StartServices({ navigation }) {
             async function getData() {
                 setLoading(true)
                 const response = await getServices(limit)
-                console.log(response)
                 if (response.statusResponse) {
                     setStartService(response.startservice)
                     setServices(response.services)
@@ -46,7 +44,6 @@ export default function StartServices({ navigation }) {
 
         setLoading(true)
         const response = await getMoreServices(limit, startService)
-        console.log(response)
         if (response.statusResponse) {
             setStartService(response.startService)
             setServices(...services, ...response.services)

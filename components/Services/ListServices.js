@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import {useFocusEffect} from '@react-navigation/native'
-import { StyleSheet, Text, View } from 'react-native'
+import { size } from 'lodash'
+import React from 'react'
+import { ActivityIndicator, FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Image } from 'react-native-elements'
+import { formatPhone } from '../../utils/helpers'
 
 export default function ListServices({ services, navigation, handleLoadMore }) {
     return (
@@ -26,6 +28,8 @@ function Service({ service, navigation, handleLoadMore }) {
         navigation.navigate("service", {id, name})
     }
 
+    console.log(Type)
+
     return (
         <TouchableOpacity onPress={goService}>
             <View style={styles.viewService}>
@@ -40,7 +44,11 @@ function Service({ service, navigation, handleLoadMore }) {
 
                 <View>
                     <Text style={styles.serviceTitle}>{name}</Text>
-                    <Text style={styles.serviceInformation}>{Type}</Text>
+                    <Text style={styles.serviceInformation}>
+                        {
+                        Type ? "En sitio":"Domicilio"
+                        }
+                        </Text>
                     <Text style={styles.serviceInformation}>{formatPhone(callingCode, phone)}</Text>
                     <Text style={styles.servieDesciption}>
                         {

@@ -132,6 +132,7 @@ export const getServices= async(limit) => {
         .orderBy("creatAt", "desc")
         .limit(limit)
         .get()
+
         if(response.docs.length > 0){
             result.startservice = response.docs[response.docs.length-1]
         }
@@ -139,7 +140,7 @@ export const getServices= async(limit) => {
         response.forEach((doc) => {
             const responseData = doc.data()
             responseData.id = doc.id
-            result.service.push(responseData)
+            result.services.push(responseData)
         })
     }
     catch (error)

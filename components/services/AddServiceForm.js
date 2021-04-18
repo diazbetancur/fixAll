@@ -45,7 +45,7 @@ export default function AddServicesForm({ toastRef, setLoading, navigation }) {
             quantityVouting: 0,
             creatAt: new Date(),
             createBy: getCurrenUser().uid,
-            Type: checked
+            Type: checked.valueOf
         }
         const responseAddDocument = await addDocumentWithoutId("services", service)
         
