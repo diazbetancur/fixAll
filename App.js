@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navigation from './navigations/Navigation'
 import {LogBox} from 'react-native'
