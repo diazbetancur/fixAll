@@ -1,6 +1,7 @@
 import {firebaseApp} from './firebase'
 import * as firebase from 'firebase'
 import 'firebase/firestore'
+
 import { fileToBlob } from './helpers'
 
 const db = firebase.firestore(firebaseApp)
@@ -189,4 +190,7 @@ export const getDocumentById= async(collection, id) => {
         result.error = error
     }
     return result
+}
+export const getCurrenUser = () =>{
+    return firebase.auth().currentUser
 }

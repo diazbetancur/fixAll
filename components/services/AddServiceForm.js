@@ -6,7 +6,7 @@ import { filter, isEmpty, map, size } from 'lodash'
 import MapView from 'react-native-maps'
 import uuid from 'random-uuid-v4'
 
-import { getCurentLocation, loadImageFromGallery, validateEmail } from '../../utils/helpers'
+import { getCurentLocation, loadImageFromGalery, validateEmail } from '../../utils/helpers'
 import Modal from '../Modal'
 import { addDocumentWithoutId, getCurrenUser, uploadImage } from '../../utils/actions'
 
@@ -24,7 +24,7 @@ export default function AddServicesForm({ toastRef, setLoading, navigation }) {
     const [location, setLocation] = useState(null)
     const [checked, setChecked] = useState(false);
 
-    const addService = async () => {
+    const addServiceInformation = async () => {
         if (!validForm()) {
             return
         }
@@ -48,7 +48,7 @@ export default function AddServicesForm({ toastRef, setLoading, navigation }) {
             Type: checked
         }
         const responseAddDocument = await addDocumentWithoutId("services", service)
-        console.log(responseAddDocument)
+        
         setLoading(false)
         if (!responseAddDocument.statusResponse) {
             toastRef.current.show("Error creando el servicio, por favor intenta más tarde.")
@@ -119,7 +119,6 @@ export default function AddServicesForm({ toastRef, setLoading, navigation }) {
             setErrorPhone("Debes ingresar un teléfono valido")
             isValid = false
         }
-
         return isValid
     }
 
@@ -155,7 +154,7 @@ export default function AddServicesForm({ toastRef, setLoading, navigation }) {
             />
             <Button
                 title="Crear Servicio"
-                onPress={addService}
+                onPress={addServiceInformation}
                 buttonStyle={styles.btnAddService}
             />
             <MapService
@@ -243,7 +242,7 @@ function ImageService({ imageService }) {
 }
 function UploadImage({ toastRef, imagesSelected, setImagesSelected }) {
     const imageSelect = async () => {
-        const response = await loadImageFromGallery([4, 3])
+        const response = await loadImageFromGalery([4, 3])
         if (!response.status) {
             toastRef.current.show("No has seleccionado ninguna imagen.", 3000)
             return
