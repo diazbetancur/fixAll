@@ -48,6 +48,7 @@ export default function AddServicesForm({ toastRef, setLoading, navigation }) {
             Type: checked
         }
         const responseAddDocument = await addDocumentWithoutId("services", service)
+        console.log(responseAddDocument)
         setLoading(false)
         if (!responseAddDocument.statusResponse) {
             toastRef.current.show("Error creando el servicio, por favor intenta más tarde.")
