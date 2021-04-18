@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import Services from '../screens/services/Services'
 import AddService from '../screens/services/AddService'
+import StartServices from '../screens/services/StartServices'
+import StartStack from './StartStack'
 
 const Stack = createStackNavigator()
 
@@ -19,6 +21,11 @@ export default function ServicesStack() {
                 name="add-service"
                 component={AddService}
                 options={{ title: "Servicios" }}
+            />
+            <Stack.Screen
+                name="Inicio"
+                component={StartStack}
+                options={{ title: "Servicios Disponibles" }}
             />
         </Stack.Navigator>
     )
