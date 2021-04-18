@@ -24,7 +24,6 @@ export default function Loading({ isVisible, text }) {
                     size="large"
                     color="#f0cc20"
                 />
-
                 {
                     text && <Text style={styles.text}>{text}</Text>
                 }
