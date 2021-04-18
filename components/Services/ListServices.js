@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import {useFocusEffect} from '@react-navigation/native'
 import { StyleSheet, Text, View } from 'react-native'
 
 export default function ListServices({ services, navigation, handleLoadMore }) {
