@@ -21,31 +21,33 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
     const [errorPhone, setErrorPhone] = useState(null)
     const [imagesSelected, setImagesSelected] = useState([])
     const [isVisibleMap, setIsVisibleMap] = useState(false)
-    const [locationRestaurant, setLocationRestaurant] = useState(null)
+    const [location, setLocation] = useState(null)
+    const [checked, setChecked] = useState(false)
 
-    const addRestaurant = async() => {
+    const addService = async() => {
         if(!validForm()){
             return
         }
 
         setLoading(true)
         const responseLoadImage = await uploadImages()
-        const restaurant = {
+        const service = {
             name: formData.name,
             address: formData.address,
             description: formData.description,
             phone: formData.phone,            
             callingCode: formData.callingCode,
             email: formData.email,
-            location: locationRestaurant,
+            location: location,
             images: responseLoadImage,
             rating:0,
             ratingTotal:0,
             quantityVouting:0,
             creatAt: new Date(),
-            createBy: getCurrenUser().uid
+            createBy: getCurrenUser().uid,
+            Type: checked
         }
-        const responseAddDocument = await addDocumentWithoutId("restaurants", restaurant)
+        const responseAddDocument = await addDocumentWithoutId("services", services)
         setLoading(false)
         console.log(responseAddDocument)
         if(!responseAddDocument.statusResponse){
@@ -53,6 +55,7 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
             return
         }
 
+        // Pendiente
         navigation.navigate("restaurants")
     }
 
@@ -61,7 +64,7 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
 
         await Promise.all(
             map(imagesSelected, async (image) => {
-                const response = await uploadImage (image,"restaurants", uuid())
+                const response = await uploadImage (image,"services", uuid())
                 if(response.statusResponse){
                     imagesUrl.push(response.url)
                 }
@@ -76,7 +79,7 @@ export default function AddServiceForm({ toastRef, setLoading, navigation }) {
         let isValid = true
 
         if(isEmpty(formData.name)){
-            setErrorName("Debes ingresar el nombre del restaurante")
+            setErrorName("Debes ingresar el nombre del experto o el servicio")
             isValid = false
         }
 

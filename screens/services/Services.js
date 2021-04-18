@@ -20,13 +20,18 @@ export default function Services({ navigation }) {
         })
     }, [])
 
-    if (user !== null) {
+    if (!user) {
         return <Loading isVisible={true} text="Cargando... " />
     }
 
     return (
         <View style={styles.viewBody}>
-            <Text style={styles.text}>¿Que tipo de Servicio esta Ofreciendo ?</Text>
+            {
+                user ? 
+                (<Text style={styles.text}>¿Que tipo de Servicio esta Ofreciendo ?</Text>)
+                :(<Text style={styles.text}>Para poder ofrecer un servicio debe estar registrado o haber iniciado sesión.</Text>)
+            }
+            
             {
                 user && (
                     <ScreenContainer style={styles.container}>
