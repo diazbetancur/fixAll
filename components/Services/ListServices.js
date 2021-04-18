@@ -9,7 +9,7 @@ export default function ListServices({ services, navigation, handleLoadMore }) {
                 keyExtractor={(item, index) => index.toString()}
                 onEndReachedThreshold={0.5}
                 onEndReached={handleLoadMore}            
-                renderItem={(restaurant) => (
+                renderItem={(service) => (
                     <Service service={service} navigation={navigation}/>
                 )}
             />
