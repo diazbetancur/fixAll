@@ -3,6 +3,8 @@ import { View, Text } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Account from '../screens/account/Account'
+import Login from '../screens/account/Login'
+import Register from '../screens/account/Register'
 
 const Stack = createStackNavigator()
 
@@ -14,6 +16,16 @@ export default function AccountStack() {
                 component = {Account}
                 options ={{title : "Cuenta"}}
             />
+            <Stack.Screen
+                name = "login"
+                component = {Login}
+                options ={{title : "Iniciar sesion"}}
+            />
+            <Stack.Screen
+            name = "register"
+            component = {Register}
+            options ={{title : "Registrar usuario"}}
+        />
         </Stack.Navigator>
     )
 }
