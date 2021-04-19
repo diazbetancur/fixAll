@@ -8,6 +8,7 @@ import Loading from '../../components/Loading'
 import MapService from '../../components/MapService'
 import { getDocumentById } from '../../utils/actions'
 import { formatPhone } from '../../utils/helpers'
+import ListReviews from '../../components/Services/ListReviews'
 
 const widthScreen = Dimensions.get("window").width
 
@@ -54,6 +55,10 @@ export default function service({ navigation, route }) {
                 address={service.address}
                 email={service.email}
                 phone={formatPhone(service.callingCode, service.phone)}
+            />
+            <ListReviews
+                navigation={navigation}
+                id={service.id}
             />
         </ScrollView>
     )
@@ -137,16 +142,18 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     nameService: {
+        marginTop: 5,
         fontWeight: "bold"
     },
     descriptionService: {
-        marginTop: 5,
+        marginTop: 10,
         color: "gray",
         textAlign: "justify"
     },
     rating: {
         position: "absolute",
-        right: 0
+        right: 0,
+        margin:5
     },
     viewServiceInfo: {
         margin: 15,
