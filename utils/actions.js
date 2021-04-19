@@ -192,6 +192,45 @@ export const getDocumentById= async(collection, id) => {
     }
     return result
 }
+
 export const getCurrenUser = () =>{
     return firebase.auth().currentUser
+}
+
+export const updateDocumentById= async(collection, id, data) => {
+    const result = {statusResponse:true, error: null}
+
+    try{
+        await db.collection(collection).doc(id).update(data)
+    }
+    catch (error)
+    {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result
+}
+
+export const getServicesReview = async(id) => {
+    const result = {statusResponse:true, error: null, review: []}
+
+    try{
+        const response  = await db
+        .collection("reviews")
+        .orderBy("creatAt", "desc")
+        .where("idServices", "==" , id)
+        .get()
+
+        response.forEach((doc) => {
+            const responseData = doc.data()
+            responseData.id = doc.id
+            result.services.push(responseData)
+        })
+    }
+    catch (error)
+    {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result
 }

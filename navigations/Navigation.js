@@ -8,7 +8,6 @@ import AccountStack from './AccountStack'
 import MyServicesStack from './MyServicesStack'
 import SearchStack from './SearchStack'
 import ServicesStack from './ServicesStack'
-import StartStack from './StartStack'
 
 const Tab = createBottomTabNavigator()
 
@@ -29,9 +28,6 @@ export default function Navigation() {
             case "account":
                 iconName = "card-account-details"
                 break;
-            case "Inicio":
-                iconName = "hammer-wrench"
-                break;
         }
 
         return (
@@ -47,7 +43,7 @@ export default function Navigation() {
     return (
         <NavigationContainer>
             <Tab.Navigator
-                initialRouteName="Inicio"
+                initialRouteName="search"
                 tabBarOptions={{
                     inactiveTintColor: "#da5252",
                     activeTintColor: "#f0cc20"
@@ -56,11 +52,6 @@ export default function Navigation() {
                     tabBarIcon: ({ color }) => screenOptions(route, color)
                 })}
             >
-                <Tab.Screen
-                    name="Inicio"
-                    component={StartStack}
-                    options={{ title: "Inicio" }}
-                />
                 <Tab.Screen
                     name="search"
                     component={SearchStack}
