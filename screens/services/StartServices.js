@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import {useFocusEffect} from '@react-navigation/native'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Picker } from 'react-native'
 import { size } from 'lodash'
 import firebase from 'firebase/app'
 
@@ -13,6 +13,7 @@ export default function StartServices({ navigation }) {
     const [services, setServices] = useState([])
     const [startService, setStartService] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [selectedValue, setSelectedValue] = useState("Plomero");
 
     const limit = 7
 
@@ -57,6 +58,15 @@ export default function StartServices({ navigation }) {
 
     return (
         <View style={styles.viewBody}>
+            <Picker
+                selectedValue={selectedValue}
+                style={{ height: 50, width: 150 }}
+                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+            >
+                <Picker.Item label="Plomero" value="Plomero" />
+                <Picker.Item label="Electricidad" value="Electricidad" />
+            </Picker>
+
             {
                 size(services) > 0
                     ? (
