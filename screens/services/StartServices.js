@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import {useFocusEffect} from '@react-navigation/native'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Picker} from 'react-native'
 import { size } from 'lodash'
 import firebase from 'firebase/app'
 
 import ListServices from '../../components/Services/ListServices'
-import { getMoreServices, getServices } from '../../utils/actions'
+import { getMoreServices, getServices, getTypeService } from '../../utils/actions'
 import Loading from '../../components/Loading'
 
 export default function StartServices({ navigation }) {
@@ -14,14 +14,19 @@ export default function StartServices({ navigation }) {
     const [startService, setStartService] = useState(null)
     const [loading, setLoading] = useState(false)
 
+    const [selectedValue, setSelectedValue] = useState("java");
+    const [typServices, setTypServices] = useState(null)
+
     const limit = 7
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((userInfo) => {
             userInfo ? setUser(true) : setUser(false)
         })
-    }, [])
 
+    }, [])
+    
+    
     useFocusEffect(
         useCallback(() => {
             async function getData() {
@@ -31,12 +36,13 @@ export default function StartServices({ navigation }) {
                     setStartService(response.startservice)
                     setServices(response.services)
                 }
+                
                 setLoading(false)
             }
             getData()
         }, [])
     )
-
+    
     const handleLoadMore = async () => {
         if (!startRestaurant) {
             return
@@ -57,6 +63,14 @@ export default function StartServices({ navigation }) {
 
     return (
         <View style={styles.viewBody}>
+            <Picker
+                selectedValue={selectedValue}
+                style={{ height: 50, width: 150 }}
+                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+            >
+                <Picker.Item label="Plomero" value="Plomero" />
+                <Picker.Item label="Electricidad" value="Electricidad" />
+            </Picker>
             {
                 size(services) > 0
                     ? (

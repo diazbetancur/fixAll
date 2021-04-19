@@ -195,3 +195,16 @@ export const getDocumentById= async(collection, id) => {
 export const getCurrenUser = () =>{
     return firebase.auth().currentUser
 }
+
+export const getTypeService =async()=>{
+    const result = {statusResponse:true, error: null, services: []}
+    
+    try {
+        const response  = await db.collection("typeservices").get()
+        response.forEach((service)=> result.services[service])
+    } catch (error) {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result
+}
