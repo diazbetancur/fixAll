@@ -212,7 +212,7 @@ export const updateDocumentById= async(collection, id, data) => {
 }
 
 export const getServicesReview = async(id) => {
-    const result = {statusResponse:true, error: null, review: []}
+    const result = {statusResponse:true, error: null, reviews: []}
 
     try{
         const response  = await db
@@ -222,9 +222,9 @@ export const getServicesReview = async(id) => {
         .get()
 
         response.forEach((doc) => {
-            const responseData = doc.data()
-            responseData.id = doc.id
-            result.services.push(responseData)
+            const review = doc.data()
+            review.id = doc.id
+            result.reviews.push(review)
         })
     }
     catch (error)
