@@ -20,9 +20,15 @@
       "supportsTablet": true
     },
     "android": {
+      "package":"com.distribuida.fixall",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCqAFgx8U2iKsBru9TypctcKzHvH7XeeiQ"
+        }
       },
       "permissions":[
         "CAMERA_ROLL",
